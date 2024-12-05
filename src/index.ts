@@ -1,21 +1,13 @@
-import express, { Express, Request, Response } from "express";
-import dotenv from "dotenv";
-import path from "path";
 import { WebSocketServer } from "ws";
 import { createServer } from "http";
+import dotenv from "dotenv";
+import path from "path";
 
 dotenv.config({ path: path.join(__dirname, "environment", ".env") });
 
-const app: Express = express();
-const PORT = process.env.PORT || 3000;
-
-app.get("/", (req: Request, res: Response) => {
-  res.send("Express + TypeScript Server");
-});
-
-const server = createServer(app);
+const PORT = process.env.PORT || 4000;
+const server = createServer();
 const wss = new WebSocketServer({ server });
-
 
 wss.on("connection", (ws) => {
   console.log("A client connected");
@@ -31,8 +23,7 @@ wss.on("connection", (ws) => {
   ws.send("Welcome to the WebSocket chat!");
 });
 
-
-
-app.listen(PORT, () => {
-  console.log(`[server]: Server D is running at http://localhost:${PORT}`);
+// Start the server to listen on the specified port
+server.listen(PORT, () => {
+  console.log(`[server]: WebSocket server is running at ws://localhost:${PORT}`);
 });
